@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <title>My Kanban Board</title>
+</head>
+<body>
+
+<!-- Modal : modifier une tâche existante -->
+<div id="modal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <h3>Modifier la tâche</h3>
+        <input id="editTitle" type="text" placeholder="Titre">
+        <input id="editDesc"  type="text" placeholder="Description">
+        <select id="editPrio">
+            <option value="">Priorité</option>
+            <option value="low">🟢 Low</option>
+            <option value="moyen">🟡 Moyen</option>
+            <option value="high">🔴 High</option>
+        </select>
+        <input id="editDate" type="date">
+        <div class="modal-btns">
+            <button id="saveEdit">Sauvegarder</button>
+            <button id="cancelEdit">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<!-- Panneau filtre : s'ouvre avec le bouton Filter -->
+<div id="filterPanel" class="filter-panel hidden">
+    <p class="filter-label">Priorité</p>
+    <div class="filter-group" id="grpPrio">
+        <button class="fbtn active" data-val="">All</button>
+        <button class="fbtn" data-val="high">🔴 High</button>
+        <button class="fbtn" data-val="moyen">🟡 Moyen</button>
+        <button class="fbtn" data-val="low">🟢 Low</button>
+    </div>
+    <p class="filter-label">Statut</p>
+    <div class="filter-group" id="grpStatus">
+        <button class="fbtn active" data-val="">All</button>
+        <button class="fbtn" data-val="toDo">📝 To Do</button>
+        <button class="fbtn" data-val="inPro">⚙️ In Progress</button>
+        <button class="fbtn" data-val="done">✅ Done</button>
+    </div>
+    <p class="filter-label">Date</p>
+    <div class="filter-group" id="grpDate">
+        <button class="fbtn active" data-val="">All</button>
+        <button class="fbtn" data-val="overdue">⚠️ En retard</button>
+        <button class="fbtn" data-val="today">🎯 Today</button>
+        <button class="fbtn" data-val="week">📆 This week</button>
+        <button class="fbtn" data-val="nodate">🚫 No date</button>
+    </div>
+    <button id="resetFilters">↺ Reset</button>
+</div>
+
+<header>
+    <nav>
+        <!-- Recherche : se déclenche sur le bouton ou la touche Entrée -->
+        <div class="search-row">
+            <input type="search" id="searchInput" placeholder="🔍 Search...">
+            <button id="searchBtn">Search</button>
+        </div>
+        <button id="filterBtn">Filter</button>
+        <select id="sortSelect">
+            <option value="">↕ Sort</option>
+            <option value="alpha">A → Z</option>
+            <option value="alphaZ">Z → A</option>
+            <option value="date">📅 Date ↑</option>
+            <option value="dateD">📅 Date ↓</option>
+            <option value="prio">🔴 Priorité ↓</option>
+            <option value="prioL">🟢 Priorité ↑</option>
+        </select>
+    </nav>
+    <h1> 𓇼🪼｡𖦹°🫧My very own board𓆉 𓆝 𓆡⋆.˚  </h1>
+    <p>Discipline is the bridge between goals and accomplishment</p>
+</header>
+
+<main>
+    <!-- Formulaire d'ajout de tâche -->
+    <form class="card" id="taskForm">
+        <input class="title"       type="text" placeholder="Title">
+        <input class="description" type="text" placeholder="Description">
+        <select class="priorite">
+            <option value="">Priorité</option>
+            <option value="low">🟢 Low</option>
+            <option value="moyen">🟡 Moyen</option>
+            <option value="high">🔴 High</option>
+        </select>
+        <!-- Calendrier personnalisé : le popup s'ouvre en cliquant sur l'input -->
+        <div class="date-wrap">
+            <input id="dateDisplay" type="text" readonly placeholder="📅 date limite">
+            <div id="calPopup" class="cal-popup hidden"></div>
+        </div>
+        <button type="submit">+ Add task</button>
+    </form>
+
+    <!-- Trois colonnes Kanban -->
+    <div class="kanban">
+        <section id="toDo"  class="column"><h2>𓇼 ⋆.˚ 𓆉 𓆝 To do 𓆡⋆.˚ 𓇼</h2></section>
+        <section id="inPro" class="column"><h2>⊹ ﹏𓊝﹏𓂁﹏⊹ In Progress 𓇼</h2></section>
+        <section id="done"  class="column"><h2>˚˖𓍢ִ໋ ✧˚.⋆ Done 🫧𓆉 𓆝</h2></section>
+    </div>
+</main>
+
+<footer>
+    <p> .˚ 𓇼  𓆉 𓆝 My Own board © 2026 .˚ 𓇼 </p>
+</footer>
+
+<script src="index.js"></script>
+</body>
+</html>

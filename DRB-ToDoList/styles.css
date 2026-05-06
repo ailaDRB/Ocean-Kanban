@@ -1,0 +1,416 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+/* ── Reset & base ─────────────────────────────────────────── */
+* { font-family: 'Comfortaa', sans-serif; margin: 0; box-sizing: border-box; }
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #a8d8f0 0%, #5bacd4 30%, #1a6fa8 65%, #0d4a7a 100%);
+}
+
+/* Le contenu passe au-dessus des poissons/bulles (z-index: 0) */
+header, main, footer { position: relative; z-index: 2; }
+
+/* ── Header ──────────────────────────────────────────────── */
+header {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,40,100,.5);
+}
+h1 { font-size: 1.5rem; margin-bottom: 8px; }
+header p { font-size: .85rem; opacity: .8; font-style: italic; }
+
+/* ── Nav ─────────────────────────────────────────────────── */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+/* Style commun à tous les éléments de la nav */
+nav input, nav select, nav button {
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.4);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 20px;
+    outline: none;
+    cursor: pointer;
+    font-size: .85rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+nav input::placeholder { color: rgba(255,255,255,.7); }
+nav select option, nav select { color: white; }
+nav select option { background: #1a6fa8; }
+nav button:hover { background: rgba(255,255,255,.35); }
+
+/* Champ recherche + bouton soudés ensemble */
+.search-row { display: flex; }
+.search-row input  { border-radius: 20px 0 0 20px; border-right: none; }
+#searchBtn { border-radius: 0 20px 20px 0; padding: 7px 12px; }
+
+/* ── Panneau filtre ──────────────────────────────────────── */
+.filter-panel {
+    position: absolute;
+    top: 54px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(8,45,100,.93);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 16px;
+    padding: 16px;
+    z-index: 50;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.35);
+}
+.filter-panel.hidden { display: none; }
+
+.filter-label {
+    color: rgba(255,255,255,.6);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.filter-group { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Boutons du panneau filtre */
+.fbtn {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: .78rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+.fbtn:hover { background: rgba(255,255,255,.22); }
+.fbtn.active { background: rgba(100,200,255,.45); border-color: rgba(100,200,255,.7); }
+
+#resetFilters {
+    align-self: flex-start;
+    background: rgba(255,80,80,.3);
+    border: 1px solid rgba(255,100,100,.4);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: .78rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+#resetFilters:hover { background: rgba(255,80,80,.5); }
+
+/* ── Main & formulaire ───────────────────────────────────── */
+main { display: flex; gap: 16px; padding: 20px; align-items: flex-start; }
+
+.card {
+    background: rgba(255,255,255,.18);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+/* Tous les champs du formulaire */
+.card input, .card select {
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.35);
+    color: white;
+    padding: 7px 10px;
+    border-radius: 10px;
+    outline: none;
+    font-size: .85rem;
+    font-family: 'Comfortaa', sans-serif;
+    width: 100%;
+}
+.card input::placeholder { color: rgba(255,255,255,.6); }
+.card select option { background: #1a6fa8; color: white; }
+
+/* Bouton Add task : vert comme les cartes Done */
+.card button[type="submit"] {
+    background: rgba(100,220,160,.45);
+    border: 1px solid rgba(100,255,180,.5);
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: .85rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+.card button[type="submit"]:hover { background: rgba(100,220,160,.7); }
+
+/* ── Calendrier personnalisé ─────────────────────────────── */
+/* Wrapper avec position:relative pour ancrer le popup */
+.date-wrap { position: relative; }
+
+/* L'input affiche la date sélectionnée, curseur pointeur car c'est un déclencheur */
+#dateDisplay { cursor: pointer; }
+
+.cal-popup {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 195px;
+    background: rgba(8,45,100,.96);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 14px;
+    padding: 12px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.4);
+}
+.cal-popup.hidden { display: none; }
+
+/* Navigation mois précédent / mois suivant */
+.cal-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: .82rem;
+}
+.cal-nav button {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    color: white;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: .75rem;
+}
+.cal-nav button:hover { background: rgba(255,255,255,.25); }
+
+/* Grille 7 colonnes (Lu Ma Me Je Ve Sa Di) */
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+.cal-h {  /* en-têtes des jours */
+    text-align: center;
+    color: rgba(255,255,255,.55);
+    font-size: .6rem;
+    padding: 3px 0;
+}
+.cal-day {
+    text-align: center;
+    padding: 5px 2px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-size: .72rem;
+}
+.cal-day:hover:not(.disabled) { background: rgba(100,180,255,.4); }
+.cal-day.today  { font-weight: bold; border: 1px solid rgba(255,255,255,.45); }
+.cal-day.selected { background: rgba(100,220,160,.5); border: 1px solid rgba(100,255,180,.6); }
+.cal-day.disabled { opacity: .28; cursor: not-allowed; }
+
+/* Bouton Valider dans le calendrier */
+#calConfirm {
+    background: rgba(100,220,160,.45);
+    border: 1px solid rgba(100,255,180,.5);
+    color: white;
+    padding: 7px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: .82rem;
+}
+#calConfirm:hover { background: rgba(100,220,160,.7); }
+
+/* ── Kanban : 3 colonnes ─────────────────────────────────── */
+.kanban { display: flex; flex: 1; gap: 16px; align-items: flex-start; }
+
+.column {
+    flex: 1;
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 14px;
+    padding: 12px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.column h2 {
+    text-align: center;
+    color: white;
+    font-size: .9rem;
+    margin-bottom: 4px;
+    text-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+
+/* ── Carte tâche ─────────────────────────────────────────── */
+.task-card {
+    background: rgba(255,255,255,.22);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: white;
+}
+
+/* Les tâches Done deviennent vertes (même vert que "Add task") */
+.task-card.done-card {
+    background: rgba(100,220,160,.42);
+    border-color: rgba(100,255,180,.5);
+}
+
+.task-title { font-size: .9rem; font-weight: 700; word-break: break-word; }
+.task-desc  { font-size: .78rem; opacity: .8; word-break: break-word; }
+
+.task-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: .73rem;
+    flex-wrap: wrap;
+    gap: 4px;
+    opacity: .9;
+}
+.overdue { color: #ffaaaa; font-weight: 700; }
+
+.task-btns { display: flex; gap: 5px; margin-top: 2px; flex-wrap: wrap; }
+.task-btns button {
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 8px;
+    padding: 4px 7px;
+    cursor: pointer;
+    font-size: .7rem;
+    color: white;
+    font-family: 'Comfortaa', sans-serif;
+}
+
+/* Couleur des boutons de statut */
+.btn-statut  { flex: 1; background: rgba(100,180,255,.3); }
+.btn-statut:hover { background: rgba(100,180,255,.55); }
+.btn-todo    { background: rgba(255,180,80,.3); }
+.btn-todo:hover  { background: rgba(255,180,80,.55); }
+.btn-inpro   { background: rgba(160,100,255,.3); }
+.btn-inpro:hover { background: rgba(160,100,255,.55); }
+.btn-edit    { background: rgba(255,200,80,.3); }
+.btn-edit:hover  { background: rgba(255,200,80,.55); }
+.btn-del     { background: rgba(255,80,80,.3); }
+.btn-del:hover   { background: rgba(255,80,80,.55); }
+
+/* ── Modal d'édition ─────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,30,80,.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+    background: rgba(10,50,120,.95);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+.modal-box h3 { text-align: center; font-size: 1rem; }
+
+.modal-box input, .modal-box select {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+    outline: none;
+    font-size: .85rem;
+    font-family: 'Comfortaa', sans-serif;
+    width: 100%;
+    color-scheme: dark;
+}
+.modal-box input::placeholder { color: rgba(255,255,255,.5); }
+.modal-box select option { background: #1a6fa8; }
+
+.modal-btns { display: flex; gap: 8px; }
+.modal-btns button {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.3);
+    color: white;
+    cursor: pointer;
+    font-size: .85rem;
+    font-family: 'Comfortaa', sans-serif;
+}
+#saveEdit   { background: rgba(100,220,160,.4); }
+#saveEdit:hover   { background: rgba(100,220,160,.65); }
+#cancelEdit { background: rgba(255,80,80,.35); }
+#cancelEdit:hover { background: rgba(255,80,80,.6); }
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer { text-align: center; padding: 16px; color: rgba(255,255,255,.6); font-size: .85rem; }
+
+/* ── Animation vague sur les titres ─────────────────────── */
+/* Chaque <span> (lettre) oscille avec un délai différent → effet vague */
+h1 span, .column h2 span, footer p span {
+    display: inline-block;
+    animation: swimChar 3s ease-in-out infinite;
+}
+@keyframes swimChar {
+    0%,100% { transform: translateY(0); }
+    25%     { transform: translateY(-6px); }
+    75%     { transform: translateY(6px); }
+}
+
+/* ── Bulles 🫧 qui montent depuis le bas ─────────────────── */
+.bulle {
+    position: fixed;
+    bottom: -60px;
+    pointer-events: none;
+    z-index: 0;  /* derrière le contenu, comme les poissons */
+    animation: monteBulle linear infinite;
+    opacity: .75;
+}
+@keyframes monteBulle {
+    0%   { transform: translateY(0) rotate(0deg);   opacity: .75; }
+    100% { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+}
+
+/* ── Poissons 🪼 𓆉 𓆝 qui nagent ─────────────────────────── */
+.poisson {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;  /* derrière le contenu (header/main/footer à z-index 2) */
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+}
+@keyframes nageGauche {
+    from { transform: translateX(-120px); }
+    to   { transform: translateX(110vw); }
+}
+@keyframes nageDroite {
+    from { transform: translateX(110vw)  scaleX(-1); }
+    to   { transform: translateX(-120px) scaleX(-1); }
+}
